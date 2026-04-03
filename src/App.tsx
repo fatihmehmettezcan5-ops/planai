@@ -6,6 +6,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 declare global {
   interface Window {
@@ -2985,6 +2986,7 @@ export default function App() {
             </div>
           </footer>
         </div>
+      <Analytics />
       </div>
     </div>
   );
