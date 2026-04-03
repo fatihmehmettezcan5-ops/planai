@@ -28,7 +28,7 @@ declare global {
 }
 
 type Role = "student" | "admin";
-type View = "dashboard" | "results" | "planner" | "books" | "admin";
+type View = "dashboard" | "results" | "planner" | "books" | "admin" | "privacy" | "terms" | "contact" | "about";
 type AiMode = "anthropic" | "openrouter" | "puter" | "free-local" | "free-demo";
 
 interface AiConfig {
@@ -221,6 +221,150 @@ const AI_CONFIGS: Record<AiMode, AiConfig> = {
 };
 
 const DEFAULT_AI_MODE: AiMode = "puter";
+
+const INFO_PAGES: Record<Extract<View, "privacy" | "terms" | "contact" | "about">, { label: string; eyebrow: string; title: string; intro: string; sections: Array<{ heading: string; body: string[] }> }> = {
+  privacy: {
+    label: "Gizlilik Politikası",
+    eyebrow: "Yasal metin",
+    title: "Gizlilik Politikası",
+    intro: "DenemeKoçu AI, öğrencilerin deneme sonuçlarını analiz etmek ve haftalık çalışma planı üretmek amacıyla tasarlanmıştır. Bu sayfa, hangi verilerin işlendiğini ve nasıl korunduğunu özetler.",
+    sections: [
+      {
+        heading: "Toplanan veriler",
+        body: [
+          "Kayıt olurken ad-soyad, kullanıcı adı, e-posta adresi ve parola bilgisi alınır.",
+          "Yüklenen deneme sonuçları, PDF veya ekran görüntüsü dosya adları ve kullanıcı tarafından girilen ek notlar plan üretimi amacıyla saklanabilir.",
+          "Admin tarafından eklenen kitap, konu listesi ve açıklama içerikleri eğitim planlaması için kullanılır.",
+        ],
+      },
+      {
+        heading: "Verilerin kullanım amacı",
+        body: [
+          "Deneme performansını analiz etmek, eksik konuları tespit etmek ve haftalık ders programı oluşturmak.",
+          "Kullanıcı hesabını yönetmek, bildirim hatırlatmalarını göstermek ve ilerleme takibini sağlamak.",
+          "Sistem güvenliğini, hata takibini ve hizmet kalitesini geliştirmek.",
+        ],
+      },
+      {
+        heading: "Saklama ve güvenlik",
+        body: [
+          "Bu demo sürümde bazı veriler tarayıcı içi yerel depolamada tutulabilir.",
+          "Gerçek üretim kullanımında parola ve API anahtarlarının frontend yerine güvenli bir backend üzerinde saklanması önerilir.",
+          "Kullanıcı, paylaştığı dosyaların içeriğinden ve bu içeriklerin yüklenmesinden sorumludur.",
+        ],
+      },
+      {
+        heading: "Üçüncü taraf servisler",
+        body: [
+          "Seçilen AI moduna göre Puter, OpenRouter veya Anthropic gibi üçüncü taraf servislerle entegrasyon kurulabilir.",
+          "Bu servislerin veri işleme politikaları kendi kullanım koşullarına tabidir.",
+          "Harici AI servisleri kullanılmadan önce kullanıcıların kendi kurum politikalarını ve gizlilik gereksinimlerini değerlendirmesi önerilir.",
+        ],
+      },
+    ],
+  },
+  terms: {
+    label: "Kullanım Şartları",
+    eyebrow: "Yasal metin",
+    title: "Kullanım Şartları",
+    intro: "Bu uygulamayı kullanan herkes aşağıdaki koşulları kabul etmiş sayılır. Platform eğitim planlamasını kolaylaştırmak için geliştirilmiştir; resmi eğitim danışmanlığı veya garanti edilen başarı hizmeti sunmaz.",
+    sections: [
+      {
+        heading: "Hizmet kapsamı",
+        body: [
+          "Uygulama, yüklenen deneme sonuçlarından hareketle AI destekli haftalık çalışma planları üretir.",
+          "Oluşturulan planlar öneri niteliğindedir; nihai akademik karar kullanıcı, veli veya eğitim kurumu tarafından verilmelidir.",
+          "Servis özellikleri haber verilmeksizin güncellenebilir, değiştirilebilir veya durdurulabilir.",
+        ],
+      },
+      {
+        heading: "Kullanıcı sorumlulukları",
+        body: [
+          "Girilen bilgilerin doğru, güncel ve kullanıcıya ait olması gerekir.",
+          "Yüklenen deneme, kitap ve diğer içeriklerde telif hakkı veya üçüncü kişi haklarını ihlal eden materyaller paylaşılmamalıdır.",
+          "Kullanıcı, hesabının güvenliğinden ve paylaştığı verilerden sorumludur.",
+        ],
+      },
+      {
+        heading: "AI çıktıları hakkında",
+        body: [
+          "AI tarafından üretilen konu eşleştirmeleri, analizler ve planlar her zaman hatasız olmayabilir.",
+          "Platform, belirli bir sınav sonucu veya akademik başarı seviyesi için garanti vermez.",
+          "Kullanıcı, AI önerilerini öğretmen veya uzman görüşüyle birlikte değerlendirmelidir.",
+        ],
+      },
+      {
+        heading: "Hesap ve erişim",
+        body: [
+          "Platform, kötüye kullanım, güvenlik riski veya şart ihlali durumunda hesap erişimini sınırlayabilir.",
+          "Admin yetkileri yalnızca kaynak yönetimi ve sistem takibi amacıyla kullanılmalıdır.",
+          "Canlı kullanım senaryolarında gerçek kimlik doğrulama ve güvenli sunucu altyapısı önerilir.",
+        ],
+      },
+    ],
+  },
+  contact: {
+    label: "İletişim",
+    eyebrow: "Destek",
+    title: "İletişim ve destek",
+    intro: "DenemeKoçu AI ile ilgili soru, öneri, hata bildirimi veya iş birliği talepleri için aşağıdaki kanalları kullanabilirsiniz.",
+    sections: [
+      {
+        heading: "Genel iletişim",
+        body: [
+          "E-posta: destek@planai.app",
+          "Ürün geri bildirimleri, hata bildirimleri ve geliştirme talepleri için e-posta üzerinden iletişime geçebilirsiniz.",
+          "Mesaj gönderirken kullandığınız cihaz, tarayıcı ve karşılaştığınız hata adımlarını belirtmeniz destek sürecini hızlandırır.",
+        ],
+      },
+      {
+        heading: "İş birliği ve kurum kullanımı",
+        body: [
+          "Okullar, kurslar ve eğitim toplulukları için özel kurulum, yönetici paneli geliştirmesi veya backend entegrasyonu talepleri ayrıca değerlendirilebilir.",
+          "Toplu kullanım, özel alan adı, kurum logolama ve veri politikası özelleştirmeleri için iletişim kurulabilir.",
+        ],
+      },
+      {
+        heading: "Yanıt süresi",
+        body: [
+          "Demo ve bireysel kullanım taleplerine uygunluk durumuna göre geri dönüş yapılır.",
+          "Acil güvenlik sorunları ve veri erişim problemleri öncelikli olarak ele alınır.",
+        ],
+      },
+    ],
+  },
+  about: {
+    label: "Hakkımızda",
+    eyebrow: "Ürün",
+    title: "DenemeKoçu AI nedir?",
+    intro: "DenemeKoçu AI; öğrencilerin deneme sonuçlarını tek bir panelde toplayan, yapay zekâ ile analiz eden ve konu-soru-gün bazlı haftalık ders planı oluşturan bir eğitim planlama uygulamasıdır.",
+    sections: [
+      {
+        heading: "Temel amaç",
+        body: [
+          "Öğrencinin yalnızca deneme sonucunu yüklemesini sağlamak, geri kalan analiz ve haftalık planlama işini AI ile otomatikleştirmek.",
+          "Eksik kazanımları konu başlıklarına dönüştürmek, uygun kitap ve kaynaklarla eşleştirerek uygulanabilir bir çalışma akışı oluşturmak.",
+        ],
+      },
+      {
+        heading: "Kimler için uygun?",
+        body: [
+          "TYT, AYT, LGS ve benzeri sınavlara hazırlanan öğrenciler.",
+          "Öğrenci takibi yapan öğretmenler, koçlar ve küçük eğitim ekipleri.",
+          "Kaynak havuzunu merkezi biçimde yönetmek isteyen admin veya kurum kullanıcıları.",
+        ],
+      },
+      {
+        heading: "Platform özellikleri",
+        body: [
+          "Kayıt ol / giriş yap akışı, admin paneli, kitap yükleme, deneme yükleme ve otomatik haftalık plan üretimi.",
+          "Bildirim desteği ile haftalık plan yenileme hatırlatması.",
+          "Puter, OpenRouter veya diğer AI sağlayıcıları ile esnek entegrasyon altyapısı.",
+        ],
+      },
+    ],
+  },
+};
 
 const DAY_NAMES = [
   "Pazartesi",
@@ -866,6 +1010,38 @@ function StatCard({ label, value, hint }: { label: string; value: string; hint: 
       <p className="mt-2 text-3xl font-semibold text-white">{value}</p>
       <p className="mt-2 text-sm text-slate-400">{hint}</p>
     </Card>
+  );
+}
+
+function InfoPageSection({ view }: { view: Extract<View, "privacy" | "terms" | "contact" | "about"> }) {
+  const page = INFO_PAGES[view];
+
+  return (
+    <>
+      <Card>
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-sm text-slate-400">{page.eyebrow}</p>
+            <h2 className="mt-1 text-2xl font-semibold text-white">{page.title}</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">{page.intro}</p>
+          </div>
+          <Badge tone="violet">{page.label}</Badge>
+        </div>
+      </Card>
+
+      <div className="grid gap-4">
+        {page.sections.map((section) => (
+          <Card key={section.heading}>
+            <h3 className="text-lg font-semibold text-white">{section.heading}</h3>
+            <div className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+              {section.body.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 }
 
@@ -1600,6 +1776,10 @@ export default function App() {
     { value: "results", label: "Deneme Sonuçları" },
     { value: "planner", label: "Haftalık Plan" },
     { value: "books", label: "Kitaplık" },
+    { value: "privacy", label: "Gizlilik Politikası" },
+    { value: "terms", label: "Kullanım Şartları" },
+    { value: "contact", label: "İletişim" },
+    { value: "about", label: "Hakkımızda" },
     ...(currentUser?.role === "admin" ? [{ value: "admin" as View, label: "Admin" }] : []),
   ];
 
@@ -1802,6 +1982,26 @@ export default function App() {
                 <div className="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-4 text-sm leading-6 text-sky-50">
                   Yayın notu: Bu sürüm Vercel dağıtımı için hazırlandı. Giriş sistemi ve bazı veriler demoda tarayıcı belleğinde tutulur. Gerçek kullanıcı verileriyle canlıya çıkmadan önce backend,
                   gizlilik politikası ve güvenli kimlik doğrulama eklenmelidir.
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                  <p className="font-medium text-white">Yasal sayfalar ve iletişim</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {([
+                      { value: "privacy", label: "Gizlilik Politikası" },
+                      { value: "terms", label: "Kullanım Şartları" },
+                      { value: "contact", label: "İletişim" },
+                      { value: "about", label: "Hakkımızda" },
+                    ] as Array<{ value: Extract<View, "privacy" | "terms" | "contact" | "about">; label: string }>).map((item) => (
+                      <span
+                        key={item.value}
+                        className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-2 text-xs text-slate-200"
+                      >
+                        {item.label}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs leading-5 text-slate-400">Bu sayfalar giriş yaptıktan sonra üst menü ve footer içinde erişilebilir.</p>
                 </div>
               </div>
             </Card>
@@ -2755,7 +2955,35 @@ export default function App() {
                 </div>
               </>
             ) : null}
+
+            {activeView === "privacy" ? <InfoPageSection view="privacy" /> : null}
+            {activeView === "terms" ? <InfoPageSection view="terms" /> : null}
+            {activeView === "contact" ? <InfoPageSection view="contact" /> : null}
+            {activeView === "about" ? <InfoPageSection view="about" /> : null}
           </div>
+
+          <footer className="mt-8 rounded-3xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-400 backdrop-blur">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p>© 2026 DenemeKoçu AI • AI destekli deneme analizi ve haftalık ders planlama platformu</p>
+              <div className="flex flex-wrap gap-2">
+                {([
+                  { value: "privacy", label: "Gizlilik Politikası" },
+                  { value: "terms", label: "Kullanım Şartları" },
+                  { value: "contact", label: "İletişim" },
+                  { value: "about", label: "Hakkımızda" },
+                ] as Array<{ value: Extract<View, "privacy" | "terms" | "contact" | "about">; label: string }>).map((item) => (
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={() => setActiveView(item.value)}
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-200 transition hover:bg-white/10"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
